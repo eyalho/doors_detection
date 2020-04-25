@@ -63,6 +63,6 @@ def run(myAnnFileName, buses):
 
 if __name__ == "__main__":
     myAnnFileName = "annotations_with_loaded_model.txt"
-    buses = os.path.join("test", "buses")
+    buses = os.path.join("test", "images")
     run(myAnnFileName, buses)
     print(f"created the file {myAnnFileName}")

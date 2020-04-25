@@ -3,7 +3,7 @@ import torchvision
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision_lib.engine import train_one_epoch, evaluate
 from torchvision_lib import utils, transforms as T
-from data_loader import BusDataset
+from data_loader import ObjectDataset
 
 
 def get_model():
@@ -35,8 +35,8 @@ def choose_device(limit_to_cpu=False):
 
 def train(device, num_epochs, batch_size, add_text):
     # use our dataset and defined transformations
-    dataset = BusDataset('train', get_transform(train=True))
-    dataset_test = BusDataset('test', get_transform(train=False))
+    dataset = ObjectDataset('doors/train', get_transform(train=True))
+    dataset_test = ObjectDataset('doors/test', get_transform(train=False))
 
 
     # define training and validation data loaders

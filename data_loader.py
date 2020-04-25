@@ -6,13 +6,13 @@ from PIL import Image
 import ast
 
 
-class BusDataset(torch.utils.data.Dataset):
+class ObjectDataset(torch.utils.data.Dataset):
     def __init__(self, root, transforms=None):
         self.root = root
         self.transforms = transforms
         # load all image files, sorting them to
         # ensure that they are aligned
-        self.imgs = list(sorted(os.listdir(os.path.join(root, "buses"))))
+        self.imgs = list(sorted(os.listdir(os.path.join(root, "images"))))
         tags_dict = {}
         with open(os.path.join(root, "annotations.txt"), "r") as ann_f:
             lines = ann_f.readlines()
@@ -35,7 +35,7 @@ class BusDataset(torch.utils.data.Dataset):
 
     def __getitem__(self, idx):
         # load images ad masks
-        img_path = os.path.join(self.root, "buses", self.imgs[idx])
+        img_path = os.path.join(self.root, "images", self.imgs[idx])
         img = Image.open(img_path).convert("RGB")
         # TODO: DELETE HACKKKKKK
         try:
