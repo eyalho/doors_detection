@@ -11,7 +11,7 @@ def get_model():
     # load a model pre-trained pre-trained on COCO
     model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
 
-    num_classes = 7  # 6 class (buses) + background
+    num_classes = 2  # 6 class (buses) + background
     # get number of input features for the classifier
     in_features = model.roi_heads.box_predictor.cls_score.in_features
     # replace the pre-trained head with a new one
@@ -36,8 +36,8 @@ def create_line(pic_name, boxes, labels):
     return line_str
 
 
-def run(myAnnFileName, buses):
-    imgs = list(sorted(os.listdir(buses)))
+def run(myAnnFileName, test_dir):
+    imgs = list(sorted(os.listdir(test_dir)))
 
     model = get_model()
     model.load_state_dict(torch.load("model_state_dict.pt"))  # load weights
@@ -47,12 +47,14 @@ def run(myAnnFileName, buses):
         for idx in range(len(imgs)):
             # pick one image from the buses folder
             img_name = imgs[idx]
-            img_path = os.path.join(buses, img_name)
+            img_path = os.path.join(test_dir, img_name)
             img = Image.open(img_path).convert("RGB")
-            img = transforms.Compose([transforms.ToTensor()])(img) # TODO Check out I did a good transform (it's similiar to get_transform)
+            img = transforms.Compose([transforms.ToTensor()])(
+                img)  # TODO Check out I did a good transform (it's similiar to get_transform)
 
             with torch.no_grad():
-                prediction = model([torch.as_tensor(np.array(img))])[0] # TODO: how to predict with higher threshold? (we find too many objects..)
+                prediction = model([torch.as_tensor(np.array(img))])[
+                    0]  # TODO: how to predict with higher threshold? (we find too many objects..)
 
             boxes = prediction.get("boxes").cpu().numpy()  # boxes is tensor([[x0, y0, x1, y1], ..])
             labels = prediction.get("labels").cpu().numpy()  # labels is tensor([label, label, ..])
@@ -63,6 +65,6 @@ def run(myAnnFileName, buses):
 
 if __name__ == "__main__":
     myAnnFileName = "annotations_with_loaded_model.txt"
-    buses = os.path.join("test", "images")
-    run(myAnnFileName, buses)
+    test_dir = os.path.join("doors", "test", "images")
+    run(myAnnFileName, test_dir)
     print(f"created the file {myAnnFileName}")
