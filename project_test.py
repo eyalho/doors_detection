@@ -203,7 +203,7 @@ if __name__ == "__main__":
     # busDir = os.path.join("doors", "test", "images")
     # saveDir = os.path.join("doors", "results")
 
-    annFileNameGT = os.path.join("doors","naor" "test", "annotations.txt")
+    annFileNameGT = os.path.join("doors","naor", "test", "annotations.txt")
     myAnnFileName = os.path.join("annotations_with_loaded_model.txt")
     busDir = os.path.join("doors","naor", "test", "images")
     saveDir = os.path.join("doors", "naor", "results")
