@@ -23,22 +23,22 @@ $ python project_test.py
 
 #### Data set:
 test and train dirs structures should be:
-train_dir:\
-├── annotations.txt\
-└── images\
-    ├── image0001_0_aug.jpg\
-    ├── image0001_1_aug.jpg\
-    .\
-    .\
-    └── image0199_5_aug.jpg\
-    \
-test_dir:\
-├── annotations.txt\
-└── images\
-    ├── image0200.jpg\
-    ├── image0201.jpg\
-    .\
-    .\
-    └──  image0300.jpg\
-   
-   
+<pre>
+train_dir:
+├── annotations.txt
+└── images
+    ├── image0001_0_aug.jpg
+    ├── image0001_1_aug.jpg
+    .
+    .
+    └── image0199_5_aug.jpg
+    
+test_dir:
+├── annotations.txt
+└── images
+    ├── image0200.jpg
+    ├── image0201.jpg
+    .
+    .
+    └──  image0300.jpg
+ </pre>
