@@ -69,7 +69,12 @@ class ObjectDataset(torch.utils.data.Dataset):
         print("--")
         print(img_path)
         print(boxes)
-        area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+
+        try:
+            area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+        except IndexError:
+            area = torch.tensor([0], dtype=torch.float32)
+
         # suppose all instances are not crowd
         iscrowd = torch.zeros((num_anns,), dtype=torch.int64)
 
@@ -77,10 +82,7 @@ class ObjectDataset(torch.utils.data.Dataset):
         target["boxes"] = boxes
         target["labels"] = labels
         target["image_id"] = image_id
-        try:
-            target["area"] = area
-        except IndexError:
-            target["area"] = torch.tensor([0], dtype=torch.float32)
+        target["area"] = area
         target["iscrowd"] = iscrowd
 
         if self.transforms is not None:
