@@ -52,30 +52,40 @@ class ObjectDataset(torch.utils.data.Dataset):
         num_anns = len(anns)  # num of boxes
         boxes = []
         labels = []
-        for ann in anns:
-            xmin = ann[0]
-            xmax = xmin + ann[2]
-            ymin = ann[1]
-            ymax = ymin + ann[3]
-            boxes.append([xmin, ymin, xmax, ymax])
-            labels.append(ann[4])
+        if num_anns == 0:
+            target = {}
+            target["boxes"] = boxes
+            target["labels"] = labels
+            target["image_id"] = torch.tensor([idx])
+            target["area"] = 0
+            target["iscrowd"] = torch.zeros((0,), dtype=torch.int64)
 
-        boxes = torch.as_tensor(boxes, dtype=torch.float32)
 
-        # there is only one class
-        labels = torch.as_tensor(labels, dtype=torch.int64)
+        else:
+            for ann in anns:
+                xmin = ann[0]
+                xmax = xmin + ann[2]
+                ymin = ann[1]
+                ymax = ymin + ann[3]
+                boxes.append([xmin, ymin, xmax, ymax])
+                labels.append(ann[4])
 
-        image_id = torch.tensor([idx])
-        area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
-        # suppose all instances are not crowd
-        iscrowd = torch.zeros((num_anns,), dtype=torch.int64)
+            boxes = torch.as_tensor(boxes, dtype=torch.float32)
 
-        target = {}
-        target["boxes"] = boxes
-        target["labels"] = labels
-        target["image_id"] = image_id
-        target["area"] = area
-        target["iscrowd"] = iscrowd
+            # there is only one class
+            labels = torch.as_tensor(labels, dtype=torch.int64)
+
+            image_id = torch.tensor([idx])
+            area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+            # suppose all instances are not crowd
+            iscrowd = torch.zeros((num_anns,), dtype=torch.int64)
+
+            target = {}
+            target["boxes"] = boxes
+            target["labels"] = labels
+            target["image_id"] = image_id
+            target["area"] = area
+            target["iscrowd"] = iscrowd
 
         if self.transforms is not None:
             img, target = self.transforms(img, target)
