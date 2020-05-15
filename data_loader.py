@@ -54,8 +54,8 @@ class ObjectDataset(torch.utils.data.Dataset):
         labels = []
         if num_anns == 0:
             target = {}
-            target["boxes"] = boxes
-            target["labels"] = labels
+            target["boxes"] = torch.as_tensor(boxes, dtype=torch.float32)
+            target["labels"] = torch.as_tensor(labels, dtype=torch.int64)
             target["image_id"] = torch.tensor([idx])
             target["area"] = torch.zeros((0,), dtype=torch.int64)
             target["iscrowd"] = torch.zeros((0,), dtype=torch.int64)
