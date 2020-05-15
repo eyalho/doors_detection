@@ -57,7 +57,7 @@ class ObjectDataset(torch.utils.data.Dataset):
             target["boxes"] = boxes
             target["labels"] = labels
             target["image_id"] = torch.tensor([idx])
-            target["area"] = 0
+            target["area"] = torch.zeros((0,), dtype=torch.int64)
             target["iscrowd"] = torch.zeros((0,), dtype=torch.int64)
 
 
