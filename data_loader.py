@@ -80,9 +80,7 @@ class ObjectDataset(torch.utils.data.Dataset):
         try:
             target["area"] = area
         except IndexError:
-            boxes = torch.as_tensor([], dtype=torch.float32)
-            boxes.append([0,0,0,0])
-            target["area"] = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+            target["area"] = torch.tensor([0], dtype=torch.float32)
         target["iscrowd"] = iscrowd
 
         if self.transforms is not None:
