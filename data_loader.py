@@ -20,17 +20,21 @@ class ObjectDataset(torch.utils.data.Dataset):
             line = line_.replace(' ', '')
             imName = line.split(':')[0]
             anns_ = line[line.index(':') + 1:].replace('\n', '')
-            anns = ast.literal_eval(anns_)
-            if (not isinstance(anns, tuple)):
-                anns = [anns]
-            tags_dict[imName] = anns
+            # Hack ignore empty labeled data
+            if len(anns_) == 0:
+                anns = []
+            else:
+                anns = ast.literal_eval(anns_)
+                if (not isinstance(anns, tuple)):
+                    anns = [anns]
+                tags_dict[imName] = anns
         self.tags_dict = tags_dict
 
         # HACK to ignore imgs without annotationsTrain
-        for img_name in self.imgs:
-            if tags_dict.get(img_name, None) is None:
-                print(f"{img_name} not found in annotations.txt. IGNORE IT")
-                self.imgs.remove(img_name)
+        # for img_name in self.imgs:
+        #     if tags_dict.get(img_name, None) is None:
+        #         print(f"{img_name} not found in annotations.txt. IGNORE IT")
+        #         self.imgs.remove(img_name)
 
 
     def __getitem__(self, idx):
