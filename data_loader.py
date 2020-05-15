@@ -31,10 +31,10 @@ class ObjectDataset(torch.utils.data.Dataset):
         self.tags_dict = tags_dict
 
         # HACK to ignore imgs without annotationsTrain
-        # for img_name in self.imgs:
-        #     if tags_dict.get(img_name, None) is None:
-        #         print(f"{img_name} not found in annotations.txt. IGNORE IT")
-        #         self.imgs.remove(img_name)
+        for img_name in self.imgs:
+            if tags_dict.get(img_name, None) is None:
+                print(f"{img_name} not found in annotations.txt. IGNORE IT")
+                self.imgs.remove(img_name)
 
 
     def __getitem__(self, idx):
