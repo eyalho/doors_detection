@@ -77,7 +77,12 @@ class ObjectDataset(torch.utils.data.Dataset):
         target["boxes"] = boxes
         target["labels"] = labels
         target["image_id"] = image_id
-        target["area"] = area
+        try:
+            target["area"] = area
+        except IndexError:
+            boxes = torch.as_tensor([], dtype=torch.float32)
+            boxes.append([0,0,0,0])
+            target["area"] = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
         target["iscrowd"] = iscrowd
 
         if self.transforms is not None:
