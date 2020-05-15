@@ -66,6 +66,9 @@ class ObjectDataset(torch.utils.data.Dataset):
         labels = torch.as_tensor(labels, dtype=torch.int64)
 
         image_id = torch.tensor([idx])
+        print("--")
+        print(img_path)
+        print(boxes)
         area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
         # suppose all instances are not crowd
         iscrowd = torch.zeros((num_anns,), dtype=torch.int64)
